@@ -3,6 +3,7 @@ from dash import dcc, html
 import dash.dependencies as dd
 import plotly.express as px
 import pandas as pd
+import numpy as np
 
 # Load the dataset
 file_path = './pum.xlsx'
@@ -26,18 +27,45 @@ app.layout = html.Div([
     # Container for the data summary
     html.Div(id='data-summary', style={'margin-top': '20px', 'margin-bottom': '20px'}),
     
-    # Graphs to display the plots
-    html.Div(id='graphs-container')
+    # Graph to display the plot
+    dcc.Graph(id='data-plot')
 ])
 
-# Callback to update the data summary and graphs based on selected column
+# Function to select the best possible graph
+def select_best_graph(data_df, column):
+    if data_df[column].dtype in ['int64', 'float64']:
+        # For numerical columns
+        unique_values = data_df[column].nunique()
+        skewness = data_df[column].skew()
+        if unique_values < 10:
+            return px.bar(data_df[column].value_counts().reset_index(),
+                          x='index', y=column,
+                          title=f'Bar Chart of {column}',
+                          labels={'index': column, column: 'Count'})
+        elif skewness > 1 or skewness < -1:
+            return px.box(data_df, y=column, title=f'Box Plot of {column}')
+        elif unique_values > 10 and unique_values < 100:
+            return px.histogram(data_df, x=column, title=f'Histogram of {column}')
+        else:
+            return px.violin(data_df, y=column, title=f'Violin Plot of {column}')
+    else:
+        # For categorical columns
+        unique_values = data_df[column].nunique()
+        if unique_values < 10:
+            return px.pie(data_df, names=column, title=f'Pie Chart of {column}')
+        else:
+            return px.bar(data_df[column].value_counts().reset_index(),
+                          x='index', y=column,
+                          title=f'Bar Chart of {column}',
+                          labels={'index': column, column: 'Count'})
+
+# Callback to update the data summary and graph based on selected column
 @app.callback(
     [dd.Output('data-summary', 'children'),
-    dd.Output('graphs-container', 'children')],
+     dd.Output('data-plot', 'figure')],
     [dd.Input('column-dropdown', 'value')]
 )
-
-def update_graphs(selected_column):
+def update_graph(selected_column):
     total_data_points = len(data_df[selected_column])
     null_ratio = data_df[selected_column].isnull().mean()
     
@@ -46,38 +74,9 @@ def update_graphs(selected_column):
         html.P(f"Ratio of Null Values: {null_ratio:.2%}")
     ])
     
-    graphs = []
-
-    if data_df[selected_column].dtype in ['int64', 'float64']:
-        # Numerical column graphs
-        hist_fig = px.histogram(data_df, x=selected_column, title=f'Histogram of {selected_column}')
-        box_fig = px.box(data_df, y=selected_column, title=f'Box Plot of {selected_column}')
-        violin_fig = px.violin(data_df, y=selected_column, title=f'Violin Plot of {selected_column}')
-        density_fig = px.density_contour(data_df, x=selected_column, title=f'Density Plot of {selected_column}')
-        
-        graphs.extend([
-            dcc.Graph(figure=hist_fig),
-            dcc.Graph(figure=box_fig),
-            dcc.Graph(figure=violin_fig),
-            dcc.Graph(figure=density_fig)
-        ])
-        
-    else:
-        # Categorical column graphs
-        bar_fig = px.bar(data_df[selected_column].value_counts().reset_index(),
-                        x='index', y=selected_column,
-                        title=f'Bar Chart of {selected_column}',
-                        labels={'index': selected_column, selected_column: 'Count'})
-        pie_fig = px.pie(data_df, names=selected_column, title=f'Pie Chart of {selected_column}')
-        heatmap_fig = px.density_heatmap(data_df, y=selected_column, title=f'Heatmap of {selected_column}')
-        
-        graphs.extend([
-            dcc.Graph(figure=bar_fig),
-            dcc.Graph(figure=pie_fig),
-            dcc.Graph(figure=heatmap_fig)
-        ])
+    fig = select_best_graph(data_df, selected_column)
     
-    return summary, graphs
+    return summary, fig
 
 # Run the app
 if __name__ == '__main__':
