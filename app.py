@@ -1,3 +1,20 @@
+'''
+Numerical Columns:
+
+Bar Chart: For columns with very few unique values.
+Box Plot: For skewed data or outliers.
+Histogram: For columns with a moderate number of unique values.
+Violin Plot: For columns with many unique values to show detailed distribution.
+Line Plot: For time series data.
+ECDF Plot: For a smooth distribution curve.
+Categorical Columns:
+
+Pie Chart: For columns with very few unique categories (<10).
+Bar Chart: For columns with a moderate number of unique categories (<50).
+Treemap: For hierarchical visualization of categorical data (<100 unique categories).
+Sunburst Chart: For multi-level hierarchical data visualization (<200 unique categories).
+Count Plot: For columns with many unique categories.
+'''
 import dash
 from dash import dcc, html
 import dash.dependencies as dd
@@ -37,6 +54,7 @@ def select_best_graph(data_df, column):
         # For numerical columns
         unique_values = data_df[column].nunique()
         skewness = data_df[column].skew()
+        
         if unique_values < 10:
             return px.bar(data_df[column].value_counts().reset_index(),
                           x='index', y=column,
@@ -44,20 +62,31 @@ def select_best_graph(data_df, column):
                           labels={'index': column, column: 'Count'})
         elif skewness > 1 or skewness < -1:
             return px.box(data_df, y=column, title=f'Box Plot of {column}')
-        elif unique_values > 10 and unique_values < 100:
+        elif unique_values < 100:
             return px.histogram(data_df, x=column, title=f'Histogram of {column}')
-        else:
+        elif unique_values < 1000:
             return px.violin(data_df, y=column, title=f'Violin Plot of {column}')
+        elif data_df.index.is_monotonic_increasing:
+            return px.line(data_df, y=column, title=f'Line Plot of {column}')
+        else:
+            return px.ecdf(data_df, x=column, title=f'ECDF Plot of {column}')
     else:
         # For categorical columns
         unique_values = data_df[column].nunique()
+        
         if unique_values < 10:
             return px.pie(data_df, names=column, title=f'Pie Chart of {column}')
-        else:
+        elif unique_values < 50:
             return px.bar(data_df[column].value_counts().reset_index(),
                           x='index', y=column,
                           title=f'Bar Chart of {column}',
                           labels={'index': column, column: 'Count'})
+        elif unique_values < 100:
+            return px.treemap(data_df, path=[column], title=f'Treemap of {column}')
+        elif unique_values < 200:
+            return px.sunburst(data_df, path=[column], title=f'Sunburst Chart of {column}')
+        else:
+            return px.histogram(data_df, x=column, title=f'Count Plot of {column}')
 
 # Callback to update the data summary and graph based on selected column
 @app.callback(
