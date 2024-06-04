@@ -1,20 +1,3 @@
-'''
-Numerical Columns:
-
-Bar Chart: For columns with very few unique values.
-Box Plot: For skewed data or outliers.
-Histogram: For columns with a moderate number of unique values.
-Violin Plot: For columns with many unique values to show detailed distribution.
-Line Plot: For time series data.
-ECDF Plot: For a smooth distribution curve.
-Categorical Columns:
-
-Pie Chart: For columns with very few unique categories (<10).
-Bar Chart: For columns with a moderate number of unique categories (<50).
-Treemap: For hierarchical visualization of categorical data (<100 unique categories).
-Sunburst Chart: For multi-level hierarchical data visualization (<200 unique categories).
-Count Plot: For columns with many unique categories.
-'''
 import dash
 from dash import dcc, html
 import dash.dependencies as dd
@@ -26,8 +9,31 @@ import numpy as np
 file_path = './pum.xlsx'
 data_df = pd.read_excel(file_path, sheet_name='data')
 
+# Preprocess the dataset
+def preprocess_data(df):
+    # Fill or drop missing values
+    df = df.fillna(method='ffill').fillna(method='bfill')
+    # Add any additional preprocessing steps here
+    return df
+
+data_df = preprocess_data(data_df)
+
 # Initialize the Dash app
 app = dash.Dash(__name__)
+
+# Define descriptions for each graph type
+graph_descriptions = {
+    'Bar Chart': 'A bar chart displays categorical data with rectangular bars representing different categories.',
+    'Box Plot': 'A box plot shows the distribution of a dataset and highlights the median, quartiles, and outliers.',
+    'Histogram': 'A histogram represents the distribution of numerical data by showing the frequency of data points in intervals.',
+    'Violin Plot': 'A violin plot combines aspects of a box plot and a KDE plot to show data distribution and density.',
+    'Line Plot': 'A line plot displays data points connected by lines, commonly used for time series data.',
+    'ECDF Plot': 'An ECDF plot shows the empirical cumulative distribution function of a dataset.',
+    'Pie Chart': 'A pie chart represents categorical data as slices of a circle, with each slice proportional to the category’s frequency.',
+    'Treemap': 'A treemap displays hierarchical data as nested rectangles, with the size of each rectangle proportional to the data value.',
+    'Sunburst Chart': 'A sunburst chart visualizes hierarchical data with concentric circles, where each level of the hierarchy is represented by a ring.',
+    'Count Plot': 'A count plot is similar to a bar chart but shows the frequency of categorical data.'
+}
 
 # Define layout
 app.layout = html.Div([
@@ -38,15 +44,64 @@ app.layout = html.Div([
         id='column-dropdown',
         options=[{'label': col, 'value': col} for col in data_df.columns],
         value=data_df.columns[0],  # Default value to the first column
-        clearable=False
+        clearable=False,
+        style={'margin-bottom': '20px'}
     ),
     
     # Container for the data summary
-    html.Div(id='data-summary', style={'margin-top': '20px', 'margin-bottom': '20px'}),
+    html.Div(id='data-summary', style={'margin-bottom': '20px'}),
     
-    # Graph to display the plot
-    dcc.Graph(id='data-plot')
+    # Div for graph description
+    html.Div(id='graph-description', style={'margin-bottom': '20px', 'padding': '10px', 'border': '1px solid #ddd', 'border-radius': '5px'}),
+    
+    # Tabs for different plots
+    dcc.Tabs(id='graph-tabs', value='best-graph', children=[])
 ])
+
+# Function to generate all possible graphs for numerical columns
+def generate_numerical_graphs(data_df, column):
+    graphs = []
+    unique_values = data_df[column].nunique()
+    skewness = data_df[column].skew()
+
+    if unique_values < 10:
+        graphs.append(('Bar Chart', px.bar(data_df[column].value_counts().reset_index(),
+                                           x='index', y=column,
+                                           title=f'Bar Chart of {column}',
+                                           labels={'index': column, column: 'Count'})))
+    if skewness > 1 or skewness < -1:
+        graphs.append(('Box Plot', px.box(data_df, y=column, title=f'Box Plot of {column}')))
+    if unique_values < 100:
+        graphs.append(('Histogram', px.histogram(data_df, x=column, title=f'Histogram of {column}')))
+    if unique_values < 1000:
+        graphs.append(('Violin Plot', px.violin(data_df, y=column, title=f'Violin Plot of {column}')))
+    if data_df.index.is_monotonic_increasing:
+        graphs.append(('Line Plot', px.line(data_df, y=column, title=f'Line Plot of {column}')))
+    
+    graphs.append(('ECDF Plot', px.ecdf(data_df, x=column, title=f'ECDF Plot of {column}')))
+
+    return graphs
+
+# Function to generate all possible graphs for categorical columns
+def generate_categorical_graphs(data_df, column):
+    graphs = []
+    unique_values = data_df[column].nunique()
+    
+    if unique_values < 10:
+        graphs.append(('Pie Chart', px.pie(data_df, names=column, title=f'Pie Chart of {column}')))
+    if unique_values < 50:
+        graphs.append(('Bar Chart', px.bar(data_df[column].value_counts().reset_index(),
+                                           x='index', y=column,
+                                           title=f'Bar Chart of {column}',
+                                           labels={'index': column, column: 'Count'})))
+    if unique_values < 100:
+        graphs.append(('Treemap', px.treemap(data_df, path=[column], title=f'Treemap of {column}')))
+    if unique_values < 200:
+        graphs.append(('Sunburst Chart', px.sunburst(data_df, path=[column], title=f'Sunburst Chart of {column}')))
+    
+    graphs.append(('Count Plot', px.histogram(data_df, x=column, title=f'Count Plot of {column}')))
+
+    return graphs
 
 # Function to select the best possible graph
 def select_best_graph(data_df, column):
@@ -56,45 +111,42 @@ def select_best_graph(data_df, column):
         skewness = data_df[column].skew()
         
         if unique_values < 10:
-            return px.bar(data_df[column].value_counts().reset_index(),
-                          x='index', y=column,
-                          title=f'Bar Chart of {column}',
-                          labels={'index': column, column: 'Count'})
+            return 'Bar Chart'
         elif skewness > 1 or skewness < -1:
-            return px.box(data_df, y=column, title=f'Box Plot of {column}')
+            return 'Box Plot'
         elif unique_values < 100:
-            return px.histogram(data_df, x=column, title=f'Histogram of {column}')
+            return 'Histogram'
         elif unique_values < 1000:
-            return px.violin(data_df, y=column, title=f'Violin Plot of {column}')
+            return 'Violin Plot'
         elif data_df.index.is_monotonic_increasing:
-            return px.line(data_df, y=column, title=f'Line Plot of {column}')
+            return 'Line Plot'
         else:
-            return px.ecdf(data_df, x=column, title=f'ECDF Plot of {column}')
+            return 'ECDF Plot'
     else:
         # For categorical columns
         unique_values = data_df[column].nunique()
         
         if unique_values < 10:
-            return px.pie(data_df, names=column, title=f'Pie Chart of {column}')
+            return 'Pie Chart'
         elif unique_values < 50:
-            return px.bar(data_df[column].value_counts().reset_index(),
-                          x='index', y=column,
-                          title=f'Bar Chart of {column}',
-                          labels={'index': column, column: 'Count'})
+            return 'Bar Chart'
         elif unique_values < 100:
-            return px.treemap(data_df, path=[column], title=f'Treemap of {column}')
+            return 'Treemap'
         elif unique_values < 200:
-            return px.sunburst(data_df, path=[column], title=f'Sunburst Chart of {column}')
+            return 'Sunburst Chart'
         else:
-            return px.histogram(data_df, x=column, title=f'Count Plot of {column}')
+            return 'Count Plot'
 
-# Callback to update the data summary and graph based on selected column
+# Combined callback to update the data summary, graph tabs, and description
 @app.callback(
     [dd.Output('data-summary', 'children'),
-     dd.Output('data-plot', 'figure')],
-    [dd.Input('column-dropdown', 'value')]
+     dd.Output('graph-tabs', 'children'),
+     dd.Output('graph-tabs', 'value'),
+     dd.Output('graph-description', 'children')],
+    [dd.Input('column-dropdown', 'value'),
+     dd.Input('graph-tabs', 'value')]
 )
-def update_graph(selected_column):
+def update_output(selected_column, selected_tab):
     total_data_points = len(data_df[selected_column])
     null_ratio = data_df[selected_column].isnull().mean()
     
@@ -102,10 +154,29 @@ def update_graph(selected_column):
         html.P(f"Total Data Points: {total_data_points}"),
         html.P(f"Ratio of Null Values: {null_ratio:.2%}")
     ])
+
+    if data_df[selected_column].dtype in ['int64', 'float64']:
+        graphs = generate_numerical_graphs(data_df, selected_column)
+    else:
+        graphs = generate_categorical_graphs(data_df, selected_column)
     
-    fig = select_best_graph(data_df, selected_column)
+    best_graph = select_best_graph(data_df, selected_column)
     
-    return summary, fig
+    tabs = [dcc.Tab(label=title, children=[dcc.Graph(figure=fig, style={'width': '100%'})], value=title)
+            for title, fig in graphs]
+    
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        triggered_input = 'column-dropdown'
+    else:
+        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+
+    if triggered_input == 'column-dropdown':
+        selected_tab = best_graph
+
+    description = graph_descriptions.get(selected_tab, "No description available.")
+
+    return summary, tabs, selected_tab, description
 
 # Run the app
 if __name__ == '__main__':
