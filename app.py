@@ -1,5 +1,5 @@
 import dash
-from dash import dcc, html
+from dash import dcc, html, dash_table
 import dash.dependencies as dd
 import plotly.express as px
 import pandas as pd
@@ -29,15 +29,25 @@ graph_descriptions = {
     'Violin Plot': 'A violin plot combines aspects of a box plot and a KDE plot to show data distribution and density.',
     'Line Plot': 'A line plot displays data points connected by lines, commonly used for time series data.',
     'ECDF Plot': 'An ECDF plot shows the empirical cumulative distribution function of a dataset.',
-    'Pie Chart': 'A pie chart represents categorical data as slices of a circle, with each slice proportional to the category’s frequency.',
+    'Pie Chart': "A pie chart represents categorical data as slices of a circle, with each slice proportional to the category's frequency.",
     'Treemap': 'A treemap displays hierarchical data as nested rectangles, with the size of each rectangle proportional to the data value.',
     'Sunburst Chart': 'A sunburst chart visualizes hierarchical data with concentric circles, where each level of the hierarchy is represented by a ring.',
     'Count Plot': 'A count plot is similar to a bar chart but shows the frequency of categorical data.'
 }
 
+# Function to calculate summary statistics
+def calculate_statistics(df, column):
+    if df[column].dtype in ['int64', 'float64']:
+        stats = df[column].describe().to_frame().reset_index()
+    else:
+        stats = df[column].value_counts().to_frame().reset_index()
+        stats.columns = ['Value', 'Count']
+        stats['Percentage'] = round((stats['Count'] / stats['Count'].sum()) * 100, 2)
+    return stats
+
 # Define layout
 app.layout = html.Div([
-    html.H1("Shipment Data Dashboard"),
+    html.H1("Data Profiling Dashboard"),
     
     # Dropdown for selecting the column to plot
     dcc.Dropdown(
@@ -55,7 +65,21 @@ app.layout = html.Div([
     html.Div(id='graph-description', style={'margin-bottom': '20px', 'padding': '10px', 'border': '1px solid #ddd', 'border-radius': '5px'}),
     
     # Tabs for different plots
-    dcc.Tabs(id='graph-tabs', value='best-graph', children=[])
+    dcc.Tabs(id='graph-tabs', value='best-graph', children=[]),
+    
+    # DataTable for displaying raw data with pagination
+    dash_table.DataTable(
+        id='data-table',
+        columns=[{'name': i, 'id': i} for i in data_df.columns],
+        data=data_df.to_dict('records'),
+        page_size=10,  # Number of rows per page
+        style_table={'overflowX': 'auto'},
+        style_cell={'textAlign': 'left'},
+        style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
+    ),
+
+    # Container for the statistical summary
+    html.Div(id='statistical-summary', style={'margin-bottom': '20px'}),
 ])
 
 # Function to generate all possible graphs for numerical columns
@@ -66,9 +90,9 @@ def generate_numerical_graphs(data_df, column):
 
     if unique_values < 10:
         graphs.append(('Bar Chart', px.bar(data_df[column].value_counts().reset_index(),
-                                           x='index', y=column,
-                                           title=f'Bar Chart of {column}',
-                                           labels={'index': column, column: 'Count'})))
+                                        x='index', y=column,
+                                        title=f'Bar Chart of {column}',
+                                        labels={'index': column, column: 'Count'})))
     if skewness > 1 or skewness < -1:
         graphs.append(('Box Plot', px.box(data_df, y=column, title=f'Box Plot of {column}')))
     if unique_values < 100:
@@ -91,9 +115,9 @@ def generate_categorical_graphs(data_df, column):
         graphs.append(('Pie Chart', px.pie(data_df, names=column, title=f'Pie Chart of {column}')))
     if unique_values < 50:
         graphs.append(('Bar Chart', px.bar(data_df[column].value_counts().reset_index(),
-                                           x='index', y=column,
-                                           title=f'Bar Chart of {column}',
-                                           labels={'index': column, column: 'Count'})))
+                                        x='index', y=column,
+                                        title=f'Bar Chart of {column}',
+                                        labels={'index': column, column: 'Count'})))
     if unique_values < 100:
         graphs.append(('Treemap', px.treemap(data_df, path=[column], title=f'Treemap of {column}')))
     if unique_values < 200:
@@ -137,23 +161,34 @@ def select_best_graph(data_df, column):
         else:
             return 'Count Plot'
 
-# Combined callback to update the data summary, graph tabs, and description
+# Combined callback to update the data summary, statistical summary, graph tabs, and description
 @app.callback(
     [dd.Output('data-summary', 'children'),
-     dd.Output('graph-tabs', 'children'),
-     dd.Output('graph-tabs', 'value'),
-     dd.Output('graph-description', 'children')],
+    dd.Output('statistical-summary', 'children'),
+    dd.Output('graph-tabs', 'children'),
+    dd.Output('graph-tabs', 'value'),
+    dd.Output('graph-description', 'children')],
     [dd.Input('column-dropdown', 'value'),
-     dd.Input('graph-tabs', 'value')]
+    dd.Input('graph-tabs', 'value')]
 )
 def update_output(selected_column, selected_tab):
     total_data_points = len(data_df[selected_column])
     null_ratio = data_df[selected_column].isnull().mean()
     
     summary = html.Div([
-        html.P(f"Total Data Points: {total_data_points}"),
-        html.P(f"Ratio of Null Values: {null_ratio:.2%}")
+        html.P(f"Total Data Points: {total_data_points}", id="numerical-data-description"),
+        html.P(f"Ratio of Null Values: {null_ratio:.2%}", id="numerical-data-description")
     ])
+    
+    # Calculate statistical summary
+    stats_df = calculate_statistics(data_df, selected_column)
+    statistical_summary = dash_table.DataTable(
+        columns=[{'name': i, 'id': i} for i in stats_df.columns],
+        data=stats_df.to_dict('records'),
+        style_table={'overflowX': 'auto'},
+        style_cell={'textAlign': 'left'},
+        style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
+    )
 
     if data_df[selected_column].dtype in ['int64', 'float64']:
         graphs = generate_numerical_graphs(data_df, selected_column)
@@ -174,9 +209,8 @@ def update_output(selected_column, selected_tab):
     if triggered_input == 'column-dropdown':
         selected_tab = best_graph
 
-    description = graph_descriptions.get(selected_tab, "No description available.")
-
-    return summary, tabs, selected_tab, description
+    description = [html.P(f"{title}: {graph_descriptions.get(title, 'No description available.')}") for title, _ in graphs]
+    return summary, statistical_summary, tabs, selected_tab, description
 
 # Run the app
 if __name__ == '__main__':

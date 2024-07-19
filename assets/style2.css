@@ -65,7 +65,7 @@ h1 {
     padding-bottom: 10px;
 }
 
-p {
+#numerical-data-description {
     font-size: 1.2em;
     color: #6c757d;
     text-align: center;
@@ -104,6 +104,9 @@ p {
     min-width: 300px;
 }
 
+#graph-description{
+    font-size: small;
+}
 @keyframes fadeIn {
     from {
         opacity: 0;
