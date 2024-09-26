@@ -1,0 +1,702 @@
+{
+    "agencies": [
+        {
+            "agency_id": "AG001",
+            "name": "Department of Homeland Security",
+            "budget": 52000000000,
+            "employees": 240000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA001",
+                    "name": "U.S. Customs and Border Protection",
+                    "budget": 17000000000,
+                    "employees": 60000,
+                    "head": {
+                        "name": "John Doe",
+                        "title": "Commissioner",
+                        "years_in_office": 3
+                    },
+                    "annual_reports": [
+                        {
+                            "year": 2023,
+                            "funding_received": 17000000000,
+                            "missions_accomplished": 4532,
+                            "miles_of_border_patrolled": 3200,
+                            "contraband_seized": [
+                                {
+                                    "type": "Narcotics",
+                                    "quantity": "15 tons",
+                                    "estimated_value": 300000000
+                                },
+                                {
+                                    "type": "Weapons",
+                                    "quantity": "2000 units",
+                                    "estimated_value": 5000000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sub_agency_id": "SA002",
+                    "name": "Federal Emergency Management Agency",
+                    "budget": 11000000000,
+                    "employees": 20000,
+                    "head": {
+                        "name": "Jane Smith",
+                        "title": "Administrator",
+                        "years_in_office": 4
+                    },
+                    "disaster_responses": [
+                        {
+                            "disaster_id": "D001",
+                            "type": "Hurricane",
+                            "location": "Florida",
+                            "response_cost": 3000000000,
+                            "lives_saved": 4500,
+                            "aid_provided": "300000 tons of supplies"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG002",
+            "name": "Department of Defense",
+            "budget": 700000000000,
+            "employees": 2800000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA003",
+                    "name": "U.S. Army",
+                    "budget": 200000000000,
+                    "employees": 1000000,
+                    "head": {
+                        "name": "General James Black",
+                        "title": "Chief of Staff",
+                        "years_in_office": 2
+                    },
+                    "missions": [
+                        {
+                            "mission_id": "M001",
+                            "type": "Overseas Deployment",
+                            "location": "Middle East",
+                            "duration": "2 years",
+                            "troops_deployed": 50000,
+                            "casualties": 120,
+                            "objectives_accomplished": 10
+                        }
+                    ]
+                },
+                {
+                    "sub_agency_id": "SA004",
+                    "name": "U.S. Navy",
+                    "budget": 180000000000,
+                    "employees": 800000,
+                    "head": {
+                        "name": "Admiral Susan Green",
+                        "title": "Chief of Naval Operations",
+                        "years_in_office": 3
+                    },
+                    "missions": [
+                        {
+                            "mission_id": "M003",
+                            "type": "Maritime Security",
+                            "location": "South China Sea",
+                            "duration": "6 months",
+                            "ships_deployed": 15,
+                            "casualties": 5,
+                            "objectives_accomplished": 3
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG003",
+            "name": "Department of Health and Human Services",
+            "budget": 1400000000000,
+            "employees": 80000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA005",
+                    "name": "Centers for Disease Control and Prevention",
+                    "budget": 12000000000,
+                    "employees": 15000,
+                    "head": {
+                        "name": "Dr. Michael White",
+                        "title": "Director",
+                        "years_in_office": 5
+                    },
+                    "public_health_initiatives": [
+                        {
+                            "initiative_id": "I001",
+                            "name": "COVID-19 Vaccination Campaign",
+                            "budget_allocated": 5000000000,
+                            "vaccines_distributed": 300000000,
+                            "vaccination_centers": [
+                                {
+                                    "state": "California",
+                                    "centers_operational": 500,
+                                    "vaccines_administered": 40000000
+                                },
+                                {
+                                    "state": "New York",
+                                    "centers_operational": 300,
+                                    "vaccines_administered": 25000000
+                                }
+                            ]
+                        },
+                        {
+                            "initiative_id": "I002",
+                            "name": "Influenza Prevention Program",
+                            "budget_allocated": 1500000000,
+                            "vaccines_distributed": 120000000,
+                            "vaccination_centers": [
+                                {
+                                    "state": "Florida",
+                                    "centers_operational": 200,
+                                    "vaccines_administered": 15000000
+                                },
+                                {
+                                    "state": "Texas",
+                                    "centers_operational": 250,
+                                    "vaccines_administered": 18000000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sub_agency_id": "SA006",
+                    "name": "Food and Drug Administration",
+                    "budget": 6000000000,
+                    "employees": 18000,
+                    "head": {
+                        "name": "Dr. Emily Carter",
+                        "title": "Commissioner",
+                        "years_in_office": 4
+                    },
+                    "regulatory_activities": [
+                        {
+                            "activity_id": "R001",
+                            "type": "Drug Approval",
+                            "drug_name": "VaccineX",
+                            "approval_date": "2023-05-15",
+                            "clinical_trials_conducted": 3,
+                            "adverse_events_reported": 150
+                        },
+                        {
+                            "activity_id": "R002",
+                            "type": "Food Safety Inspection",
+                            "inspections_conducted": 10000,
+                            "violations_found": 200,
+                            "recalls_initiated": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG004",
+            "name": "Department of Justice",
+            "budget": 30000000000,
+            "employees": 115000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA007",
+                    "name": "Federal Bureau of Investigation",
+                    "budget": 9000000000,
+                    "employees": 35000,
+                    "head": {
+                        "name": "Christopher Wray",
+                        "title": "Director",
+                        "years_in_office": 7
+                    },
+                    "investigations": [
+                        {
+                            "investigation_id": "INV001",
+                            "type": "Cybercrime",
+                            "cases_opened": 1500,
+                            "cases_solved": 1000,
+                            "notable_arrests": [
+                                {
+                                    "name": "John Hacker",
+                                    "crime": "Bank Fraud",
+                                    "sentence": "10 years"
+                                }
+                            ]
+                        },
+                        {
+                            "investigation_id": "INV002",
+                            "type": "Counterterrorism",
+                            "cases_opened": 300,
+                            "cases_solved": 280,
+                            "notable_arrests": [
+                                {
+                                    "name": "Jane Bomber",
+                                    "crime": "Attempted Terrorism",
+                                    "sentence": "25 years"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sub_agency_id": "SA008",
+                    "name": "Drug Enforcement Administration",
+                    "budget": 3100000000,
+                    "employees": 10000,
+                    "head": {
+                        "name": "Anne Milgram",
+                        "title": "Administrator",
+                        "years_in_office": 2
+                    },
+                    "operations": [
+                        {
+                            "operation_id": "OP001",
+                            "name": "Operation Green Dawn",
+                            "location": "Texas",
+                            "drugs_seized": [
+                                {
+                                    "type": "Marijuana",
+                                    "quantity": "10 tons",
+                                    "estimated_value": 20000000
+                                }
+                            ],
+                            "arrests_made": 50
+                        },
+                        {
+                            "operation_id": "OP002",
+                            "name": "Operation Snowfall",
+                            "location": "New York",
+                            "drugs_seized": [
+                                {
+                                    "type": "Cocaine",
+                                    "quantity": "5 tons",
+                                    "estimated_value": 100000000
+                                }
+                            ],
+                            "arrests_made": 30
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG005",
+            "name": "Department of Education",
+            "budget": 68000000000,
+            "employees": 4000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA009",
+                    "name": "Office of Federal Student Aid",
+                    "budget": 23000000000,
+                    "employees": 1500,
+                    "head": {
+                        "name": "Richard Cordray",
+                        "title": "Chief Operating Officer",
+                        "years_in_office": 3
+                    },
+                    "student_loan_statistics": [
+                        {
+                            "year": 2023,
+                            "loans_disbursed": 8000000000,
+                            "students_served": 5000000,
+                            "default_rate": 10.5
+                        },
+                        {
+                            "year": 2022,
+                            "loans_disbursed": 7500000000,
+                            "students_served": 4800000,
+                            "default_rate": 11.2
+                        }
+                    ]
+                },
+                {
+                    "sub_agency_id": "SA010",
+                    "name": "Office for Civil Rights",
+                    "budget": 1500000000,
+                    "employees": 800,
+                    "head": {
+                        "name": "Catherine Lhamon",
+                        "title": "Assistant Secretary",
+                        "years_in_office": 4
+                    },
+                    "civil_rights_investigations": [
+                        {
+                            "investigation_id": "CRI001",
+                            "type": "Discrimination in Education",
+                            "cases_opened": 100,
+                            "cases_closed": 90,
+                            "notable_outcomes": [
+                                {
+                                    "institution": "XYZ University",
+                                    "settlement_amount": 5000000,
+                                    "reform_measures": [
+                                        "Mandatory sensitivity training",
+                                        "Creation of a diversity office"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "investigation_id": "CRI002",
+                            "type": "Title IX Violations",
+                            "cases_opened": 150,
+                            "cases_closed": 130,
+                            "notable_outcomes": [
+                                {
+                                    "institution": "ABC College",
+                                    "settlement_amount": 2000000,
+                                    "reform_measures": [
+                                        "Revised sexual harassment policies",
+                                        "Increased funding for counseling services"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG006",
+            "name": "Environmental Protection Agency",
+            "budget": 9200000000,
+            "employees": 14000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA011",
+                    "name": "Office of Air and Radiation",
+                    "budget": 2500000000,
+                    "employees": 3500,
+                    "head": {
+                        "name": "Lisa Jackson",
+                        "title": "Assistant Administrator",
+                        "years_in_office": 5
+                    },
+                    "environmental_initiatives": [
+                        {
+                            "initiative_id": "EI001",
+                            "name": "Clean Air Act Enforcement",
+                            "pollutants_reduced": "500,000 tons",
+                            "states_impacted": [
+                                "California",
+                                "Texas",
+                                "Ohio"
+                            ]
+                        },
+                        {
+                            "initiative_id": "EI002",
+                            "name": "Ozone Layer Protection Program",
+                            "chemicals_banned": [
+                                "CFCs",
+                                "HCFCs"
+                            ],
+                            "international_agreements_signed": 3
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG007",
+            "name": "Department of Transportation",
+            "budget": 87000000000,
+            "employees": 58000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA012",
+                    "name": "Federal Aviation Administration",
+                    "budget": 16000000000,
+                    "employees": 45000,
+                    "head": {
+                        "name": "Stephen Dickson",
+                        "title": "Administrator",
+                        "years_in_office": 4
+                    },
+                    "aviation_statistics": [
+                        {
+                            "year": 2023,
+                            "flights_monitored": 9500000,
+                            "safety_incidents_reported": 150,
+                            "new_regulations_implemented": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG008",
+            "name": "Department of Agriculture",
+            "budget": 146000000000,
+            "employees": 100000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA013",
+                    "name": "Forest Service",
+                    "budget": 5700000000,
+                    "employees": 30000,
+                    "head": {
+                        "name": "Vicki Christiansen",
+                        "title": "Chief",
+                        "years_in_office": 6
+                    },
+                    "forest_management": [
+                        {
+                            "forest_id": "F001",
+                            "name": "Tongass National Forest",
+                            "acres_managed": 17000000,
+                            "wildfire_prevention_measures": [
+                                "Controlled burns",
+                                "Firebreak construction"
+                            ]
+                        },
+                        {
+                            "forest_id": "F002",
+                            "name": "Shawnee National Forest",
+                            "acres_managed": 280000,
+                            "wildfire_prevention_measures": [
+                                "Public education campaigns",
+                                "Vegetation management"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG009",
+            "name": "Department of Commerce",
+            "budget": 11000000000,
+            "employees": 47000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA014",
+                    "name": "National Oceanic and Atmospheric Administration",
+                    "budget": 5700000000,
+                    "employees": 12000,
+                    "head": {
+                        "name": "Richard Spinrad",
+                        "title": "Administrator",
+                        "years_in_office": 3
+                    },
+                    "oceanic_research_projects": [
+                        {
+                            "project_id": "O001",
+                            "name": "Deep Sea Exploration",
+                            "budget_allocated": 200000000,
+                            "discoveries_made": [
+                                "New marine species",
+                                "Underwater volcanic activity"
+                            ]
+                        },
+                        {
+                            "project_id": "O002",
+                            "name": "Coral Reef Protection Initiative",
+                            "budget_allocated": 50000000,
+                            "reefs_monitored": 25,
+                            "restoration_success_rate": "75%"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG010",
+            "name": "Department of Housing and Urban Development",
+            "budget": 52000000000,
+            "employees": 7000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA015",
+                    "name": "Office of Public and Indian Housing",
+                    "budget": 27000000000,
+                    "employees": 3000,
+                    "head": {
+                        "name": "Hunter Kurtz",
+                        "title": "Assistant Secretary",
+                        "years_in_office": 4
+                    },
+                    "housing_programs": [
+                        {
+                            "program_id": "HP001",
+                            "name": "Section 8 Housing Assistance",
+                            "families_served": 2000000,
+                            "average_subsidy_per_family": 9000
+                        },
+                        {
+                            "program_id": "HP002",
+                            "name": "Indian Housing Block Grant",
+                            "tribal_communities_served": 500,
+                            "total_funding": 700000000
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG011",
+            "name": "Department of Veterans Affairs",
+            "budget": 260000000000,
+            "employees": 370000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA016",
+                    "name": "Veterans Health Administration",
+                    "budget": 110000000000,
+                    "employees": 320000,
+                    "head": {
+                        "name": "Dr. Richard Stone",
+                        "title": "Executive in Charge",
+                        "years_in_office": 3
+                    },
+                    "healthcare_statistics": [
+                        {
+                            "year": 2023,
+                            "veterans_served": 9000000,
+                            "hospitals_operational": 170,
+                            "patient_satisfaction_rate": "89%"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG012",
+            "name": "Social Security Administration",
+            "budget": 1100000000000,
+            "employees": 60000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA017",
+                    "name": "Office of Retirement and Disability Policy",
+                    "budget": 900000000,
+                    "employees": 10000,
+                    "head": {
+                        "name": "Andrew Saul",
+                        "title": "Commissioner",
+                        "years_in_office": 5
+                    },
+                    "benefit_programs": [
+                        {
+                            "program_id": "BP001",
+                            "name": "Social Security Retirement",
+                            "beneficiaries": 63000000,
+                            "total_benefits_disbursed": 930000000000
+                        },
+                        {
+                            "program_id": "BP002",
+                            "name": "Disability Insurance",
+                            "beneficiaries": 8000000,
+                            "total_benefits_disbursed": 150000000000
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG013",
+            "name": "Department of Energy",
+            "budget": 30000000000,
+            "employees": 14000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA018",
+                    "name": "Office of Energy Efficiency and Renewable Energy",
+                    "budget": 2800000000,
+                    "employees": 3000,
+                    "head": {
+                        "name": "Daniel Simmons",
+                        "title": "Assistant Secretary",
+                        "years_in_office": 4
+                    },
+                    "energy_programs": [
+                        {
+                            "program_id": "EP001",
+                            "name": "Solar Energy Technologies Office",
+                            "projects_funded": 150,
+                            "megawatts_installed": 20000
+                        },
+                        {
+                            "program_id": "EP002",
+                            "name": "Wind Energy Technologies Office",
+                            "projects_funded": 75,
+                            "megawatts_installed": 15000
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG014",
+            "name": "Department of the Treasury",
+            "budget": 13000000000,
+            "employees": 87000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA019",
+                    "name": "Internal Revenue Service",
+                    "budget": 12000000000,
+                    "employees": 75000,
+                    "head": {
+                        "name": "Charles Rettig",
+                        "title": "Commissioner",
+                        "years_in_office": 6
+                    },
+                    "tax_statistics": [
+                        {
+                            "year": 2023,
+                            "total_tax_revenue_collected": 3500000000000,
+                            "tax_returns_processed": 160000000,
+                            "audits_conducted": 1200000
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "agency_id": "AG015",
+            "name": "Department of the Interior",
+            "budget": 14000000000,
+            "employees": 70000,
+            "sub_agencies": [
+                {
+                    "sub_agency_id": "SA020",
+                    "name": "National Park Service",
+                    "budget": 4000000000,
+                    "employees": 20000,
+                    "head": {
+                        "name": "Chuck Sams",
+                        "title": "Director",
+                        "years_in_office": 2
+                    },
+                    "park_management": [
+                        {
+                            "park_id": "P001",
+                            "name": "Yellowstone National Park",
+                            "annual_visitors": 4000000,
+                            "maintenance_budget": 100000000,
+                            "wildlife_protection_programs": [
+                                "Bear Management Program",
+                                "Wolf Reintroduction Program"
+                            ]
+                        },
+                        {
+                            "park_id": "P002",
+                            "name": "Yosemite National Park",
+                            "annual_visitors": 3500000,
+                            "maintenance_budget": 80000000,
+                            "wildlife_protection_programs": [
+                                "Mountain Lion Monitoring",
+                                "Invasive Species Control"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
